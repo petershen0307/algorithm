@@ -3,9 +3,15 @@ import Boyer_moore
 
 
 class TestBoyerMoore(unittest.TestCase):
-    '''def test_string(self):
+    def test_string(self):
         self.assertEqual(Boyer_moore.search_string('abcdefg', 'abc'),
-                         {'first_appear': 0, 'count': 1})'''
+                         {'found_position': [0], 'found_count': 1})
+        self.assertEqual(Boyer_moore.search_string('abcdefgabcghhbc', 'abc'),
+                         {'found_position': [0, 7], 'found_count': 2})
+        self.assertEqual(Boyer_moore.search_string('aabbcc', 'aa'),
+                         {'found_position': [0], 'found_count': 1})
+        self.assertEqual(Boyer_moore.search_string('aabbccee', 'bb'),
+                         {'found_position': [2], 'found_count': 1})
 
 
 class TestBoyerMooreTable(unittest.TestCase):
