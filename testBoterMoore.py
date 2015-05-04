@@ -3,7 +3,7 @@ import Boyer_moore
 
 
 class TestBoyerMoore(unittest.TestCase):
-    def test_string(self):
+    def test_string_single_line(self):
         self.assertEqual(Boyer_moore.search_string('abcdefg', 'abc'),
                          {'found_position': [0], 'found_count': 1})
         self.assertEqual(Boyer_moore.search_string('abcdefgabcghhbc', 'abc'),
@@ -12,6 +12,10 @@ class TestBoyerMoore(unittest.TestCase):
                          {'found_position': [0], 'found_count': 1})
         self.assertEqual(Boyer_moore.search_string('aabbccee', 'bb'),
                          {'found_position': [2], 'found_count': 1})
+
+    def test_string_multiple_lines(self):
+        self.assertEqual(Boyer_moore.search_string('tyuiop\n\rabmtyukll\n\rvvvtyu', 'tyu'),
+                         {'found_position': [0, 11, 22], 'found_count': 3})
 
 
 class TestBoyerMooreTable(unittest.TestCase):
