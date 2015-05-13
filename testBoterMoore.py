@@ -17,6 +17,11 @@ class TestBoyerMoore(unittest.TestCase):
         self.assertEqual(Boyer_moore.search_string('tyuiop\n\rabmtyukll\n\rvvvtyu', 'tyu'),
                          {'found_position': [0, 11, 22], 'found_count': 3})
 
+    def test_open_file(self):
+        with open('test_files/qaz.txt', encoding='utf-8') as file_content:
+            self.assertEqual(Boyer_moore.search_string(file_content.read(), 'qaz'),
+                             {'found_position': [0, 22, 32], 'found_count': 3})
+
 
 class TestBoyerMooreTable(unittest.TestCase):
     def test_boyer_moore_table(self):
