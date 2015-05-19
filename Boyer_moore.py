@@ -34,6 +34,11 @@ def create_boyer_moore_table(pattern):
     boyer_moore_table['*'] = len(pattern)
     return boyer_moore_table
 
+
+def get_line_number(source_string):
+    string_list = source_string.split('\n')
+    return len(string_list)
+
 if __name__ == '__main__':
     print(create_boyer_moore_table('abcd'))
     rr = search_string('aabbcceebb', 'bb')

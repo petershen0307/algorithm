@@ -26,11 +26,24 @@ class TestBoyerMoore(unittest.TestCase):
 class TestBoyerMooreTable(unittest.TestCase):
     def test_boyer_moore_table(self):
         self.assertEqual(Boyer_moore.create_boyer_moore_table('asd'),
-            {'a': 2, 's': 1, 'd': 1, '*': 3})
+                         {'a': 2, 's': 1, 'd': 1, '*': 3})
         self.assertEqual(Boyer_moore.create_boyer_moore_table('asdsdd'),
-            {'a': 5, 's': 2, 'd': 1, '*': 6})
+                         {'a': 5, 's': 2, 'd': 1, '*': 6})
         self.assertEqual(Boyer_moore.create_boyer_moore_table('asdsddfg'),
-            {'a': 7, 's': 4, 'd': 2, 'f': 1, 'g': 1, '*': 8})
+                         {'a': 7, 's': 4, 'd': 2, 'f': 1, 'g': 1, '*': 8})
+
+
+class TestGetLineNumber(unittest.TestCase):
+    def test_line_number(self):
+        self.assertEqual(Boyer_moore.get_line_number('aaa'), 1)
+        self.assertEqual(Boyer_moore.get_line_number('aaa\n'), 2)
+        self.assertEqual(Boyer_moore.get_line_number('\n'), 2)
+        self.assertEqual(Boyer_moore.get_line_number('\njjj'), 2)
+        self.assertEqual(Boyer_moore.get_line_number('\njjj\n'), 3)
+
+    def test_open_file(self):
+        with open('test_files/line6.txt', encoding='utf-8') as file_content:
+            self.assertEqual(Boyer_moore.get_line_number(file_content.read()), 6)
 
 
 if __name__ == '__main__':
