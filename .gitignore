@@ -60,4 +60,5 @@ target/
 *.o
 *.i
 *.s
+*.out
 
