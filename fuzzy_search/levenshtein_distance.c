@@ -36,6 +36,15 @@ int min3(int a, int b, int c)
         return c;
 }
 
+void free2D(int **target, int const d1_len)
+{
+    for (int i = 0; i < d1_len; ++i)
+    {
+        free(target[i]);
+        target[i] = NULL;
+    }
+}
+
 int calc_distance(char const *str1, char const *str2)
 {
     int const len_str1 = strlen(str1);
@@ -80,6 +89,8 @@ int calc_distance(char const *str1, char const *str2)
             DEBUG_PRINT("result[%d][%d]:%d\n", i, j, result[i][j]);
         }
     }
+    int const edit_distance = result[len_str1][len_str2];
     print_2d(result, ARRAY_LOGIC_SIZE(len_str1), ARRAY_LOGIC_SIZE(len_str2));
-    return result[len_str1][len_str2];
+    free2D(result, ARRAY_LOGIC_SIZE(len_str1));
+    return edit_distance;
 }
