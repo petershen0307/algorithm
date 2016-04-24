@@ -19,6 +19,16 @@ levenshtein_distance: levenshtein_distance.c levenshtein_distance.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_option) \
 		-c $@.c -o $@.o
 
+# ++++for record++++
+create_precompile:
+	$(CC) $(CFLAGS_common) \
+		-E test_main.c -o test_main.i
+
+# $gcc -S test_main.i -o test_main.s
+create_assembly:
+	$(CC) $(CFLAGS_common) \
+		-S test_main.c -o test_main.s
+# ----for record----
 .PHONY: clean
 clean:
-	$(RM) $(EXEC) *.o
+	$(RM) $(EXEC) *.o *.i *.s *.out

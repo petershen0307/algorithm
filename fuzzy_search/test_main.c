@@ -40,5 +40,6 @@ static char * test_calc_distance()
     mu_assert("error, calc_distance(\"abc\", \"12345\") != 8", calc_distance("abc", "12345") == 5);
     mu_assert("error, calc_distance(\"sitting\", \"kitten\") != 3", calc_distance("sitting", "kitten") == 3);
     mu_assert("error, calc_distance(\"\", \"kitten\") != 6", calc_distance("", "kitten") == 6);
+    mu_assert("error, calc_distance(\"what\", \"water\") != 6", calc_distance("what", "water") == 3);
     return 0;
 }
