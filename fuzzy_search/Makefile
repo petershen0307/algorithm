@@ -1,9 +1,11 @@
 CC ?= gcc
 CFLAGS_common ?= -Wall -std=gnu99
-CFLAGS_option = -O0 -g
-
+CFLAGS_option = -O0
 EXEC = main.out
 all: $(EXEC)
+
+debug: CFLAGS_option += -g -DDEBUG
+debug: $(EXEC)
 
 main.out: main.o levenshtein_distance
 	$(CC) $(CFLAGS_common) $(CFLAGS_option) \
