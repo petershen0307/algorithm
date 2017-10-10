@@ -52,6 +52,8 @@ int _tmain()
     {
         CloseHandle(threadHandle[i]);
     }
+    CloseHandle(pathQueueMutex);
+    CloseHandle(outputQueueMutex);
     _tprintf(L"finish");
     return 0;
 }
