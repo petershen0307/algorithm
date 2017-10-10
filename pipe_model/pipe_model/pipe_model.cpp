@@ -5,11 +5,13 @@
 #include "funcs.h"
 #include "common.h"
 
-#define MAX_THREAD 1
+#define MAX_THREAD 2
 
 HANDLE pathQueueMutex;
+HANDLE outputQueueMutex;
 
-void creaetScanner(HANDLE *, DWORD *, PPathQueue);
+void createScanner(HANDLE *, DWORD *, PScanPipeParameter);
+void createCalculator(HANDLE *, DWORD *, PScanPipeParameter);
 
 int _tmain()
 {
@@ -17,14 +19,30 @@ int _tmain()
     HANDLE threadHandle[MAX_THREAD];
     DWORD threadId[MAX_THREAD];
 
-    // scanner
+    // mutex
     pathQueueMutex = CreateMutex(
         NULL,              // default security attributes
         FALSE,             // initially not owned
         NULL);             // unnamed mutex
+    outputQueueMutex = CreateMutex(
+        NULL,              // default security attributes
+        FALSE,             // initially not owned
+        NULL);             // unnamed mutex
+
+    // scanner
     PPathQueue pathQueue = new PathQueue();
-    creaetScanner(&threadHandle[0], &threadId[0], pathQueue);
+    POutputQueue outputQueue = new OutputQueue();
+    PScanPipeParameter pScanPipeParam = new ScanPipeParameter();
+    pScanPipeParam->pPathQueue = pathQueue;
+    pScanPipeParam->pOutputQueue = outputQueue;
+    pScanPipeParam->bEndScan = false;
+    pScanPipeParam->bEndCalc = false;
+    createScanner(&threadHandle[0], &threadId[0], pScanPipeParam);
     _tprintf(L"thread id %u\n", threadId[0]);
+
+
+    createCalculator(&threadHandle[1], &threadId[1], pScanPipeParam);
+    _tprintf(L"thread id %u\n", threadId[1]);
 
     // wait children threads
     WaitForMultipleObjects(MAX_THREAD, threadHandle, TRUE, INFINITE);
@@ -34,23 +52,28 @@ int _tmain()
     {
         CloseHandle(threadHandle[i]);
     }
-    _tprintf(L"print path queue\n");
-    while (!pathQueue->empty())
-    {
-        PathQueue::value_type path = pathQueue->front();
-        pathQueue->pop();
-        _tprintf(L"%s\n", path.c_str());
-    }
+    _tprintf(L"finish");
     return 0;
 }
 
-void creaetScanner(HANDLE *threadHandle, DWORD *threadId, PPathQueue pathQueue)
+void createScanner(HANDLE *threadHandle, DWORD *threadId, PScanPipeParameter param)
 {
     *threadHandle = CreateThread(
         NULL,                   // default security attributes
         0,                      // use default stack size
         scanner,                // thread function name
-        pathQueue,              // argument to thread function
+        param,              // argument to thread function
+        0,                      // use default creation flags
+        threadId);              // returns the thread identifier
+}
+
+void createCalculator(HANDLE *threadHandle, DWORD *threadId, PScanPipeParameter param)
+{
+    *threadHandle = CreateThread(
+        NULL,                   // default security attributes
+        0,                      // use default stack size
+        calculator,                // thread function name
+        param,              // argument to thread function
         0,                      // use default creation flags
         threadId);              // returns the thread identifier
 }

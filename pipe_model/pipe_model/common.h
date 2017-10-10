@@ -15,3 +15,12 @@ extern HANDLE pathQueueMutex;
 #define MAX_OUTPUT_QUEUE 100
 typedef std::queue<std::pair<std::string, TSTRING> > *POutputQueue, OutputQueue;
 extern HANDLE outputQueueMutex;
+
+typedef struct _ScanPipeParameter
+{
+    bool bEndScan;
+    bool bEndCalc;
+    PPathQueue pPathQueue;
+    POutputQueue pOutputQueue;
+
+} ScanPipeParameter, *PScanPipeParameter;
